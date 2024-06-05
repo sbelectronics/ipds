@@ -1,20 +1,12 @@
 ISIS=../simulator/isis/gnu/isis
 
-all: testasm.hex
+all: forth.hex hello.hex
 
 # .PHONY: env
 
 export ISIS_F1=../simulator/isis/intel/plm80
 export ISIS_F2=../simulator/isis/intel/utils
 export ISIS_F3=../simulator/isis/intel/asm80
-
-
-testasm.hex: testasm.obj
-	$(ISIS) :f2:objhex testasm.obj to testasm.hex
-	cat testasm.hex
-
-testasm.obj: testasm.asm
-	$(ISIS) :f3:asm80 testasm.asm
 
 forth : forth.obj
 	$(ISIS) :f2:link forth.obj,syspds.lib to forth.lnk
@@ -31,7 +23,6 @@ forth.obj: forth.asm
 
 hello: hello.obj
 	$(ISIS) :f2:link hello.obj,syspds.lib to hello.lnk  MAP
-#	$(ISIS) :f2:link hello.obj,:f2:system.lib to hello.lnk
 	$(ISIS) :f2:locate hello.lnk to hello MAP PRINT\(hello.map\)
 
 hello.hex: hello
