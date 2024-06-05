@@ -8,8 +8,8 @@ export ISIS_F1=../simulator/isis/intel/plm80
 export ISIS_F2=../simulator/isis/intel/utils
 export ISIS_F3=../simulator/isis/intel/asm80
 
-forth : forth.obj
-	$(ISIS) :f2:link forth.obj,syspds.lib to forth.lnk
+forth : forth.obj conio.obj
+	$(ISIS) :f2:link forth.obj,conio.obj,syspds.lib to forth.lnk
 	$(ISIS) :f2:locate forth.lnk to forth MAP PRINT\(forth.map\)
 
 forth.hex: forth
@@ -20,6 +20,9 @@ forth-run:
 
 forth.obj: forth.asm
 	$(ISIS) :f3:asm80 forth.asm
+
+conio.obj: conio.asm
+	$(ISIS) :f3:asm80 conio.asm
 
 hello: hello.obj
 	$(ISIS) :f2:link hello.obj,syspds.lib to hello.lnk  MAP
