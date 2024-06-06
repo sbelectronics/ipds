@@ -54,23 +54,15 @@ nowrap:	mov h,a
 
 PRSPACE	macro
 	push b
-	;push d
-	push h
 	mvi c,' '
 	call CO
-	pop h
-	;pop d
 	pop b
 	endm
 
 PRSTAR	macro
 	push b
-	;push d
-	push h
 	mvi c,'*'
 	call CO
-	pop h
-	;pop d
 	pop b
 	endm
 
@@ -97,7 +89,6 @@ ORIG:	LXI	SP,STACK			; Setup initial stack
 
 	CALL	HOME
 	CALL	COPY
-	CALL	EXIT
 
 FOREVR:
 	CALL	FULL
