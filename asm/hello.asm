@@ -1,48 +1,26 @@
 ;
 ; ISIS system calls
 ;
-	EXTRN CO
-	EXTRN CI
-	EXTRN CSTS
+	EXTRN COPEN
+	EXTRN ZSOUT
 	EXTRN EXIT
 ;
 ;
 ;-------------------------------------------------------
-;
-;	ORG	3A80H
-	CSEG
-ORIG:	LXI	SP,STCKE
-	MVI	C,'H'
-	CALL	CO
-	MVI	C,'E'
-	CALL	CO
-	MVI	C,'L'
-	CALL	CO
-	MVI	C,'L'
-	CALL	CO
-	MVI	C,'O'
-	CALL	CO
-	MVI	C,','
-	CALL	CO
-	MVI	C,' '
-	CALL	CO
-	MVI	C,'W'
-	CALL	CO
-	MVI	C,'O'
-	CALL	CO
-	MVI	C,'R'
-	CALL	CO
-	MVI	C,'L'
-	CALL	CO
-	MVI	C,'D'
-	CALL	CO
-	MVI	C,0DH
-	CALL	CO
-	MVI	C,0AH
-	CALL	CO
-	CALL    EXIT
 
-STCKA:  DS	128
-STCKE:  DS	4
+	STKLN	100H				; Size of stack segment
+
+	CSEG
+
+ORIG:	NOP					; Some NOPs makes it easier for the disassembler to sync
+	NOP
+	NOP
+	LXI	SP,STACK			; Setup initial stack
+	CALL	COPEN				; Open the console
+	LXI	D, HELLO			; Load Hello String
+	CALL	ZSOUT				; Print string
+	CALL	EXIT				; Exit to ISIS
+
+HELLO:	DB	'Hello, World!', 0DH, 0AH, 0
 
 	END	ORIG

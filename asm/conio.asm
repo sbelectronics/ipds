@@ -3,13 +3,13 @@
 ;
 ; ISIS system calls
 ;
-	EXTRN CO
-	EXTRN CI
+	;EXTRN CO
+	;EXTRN CI
+	;EXTRN PO
+	;EXTRN RI
+	;EXTRN IOCHK
 	EXTRN CSTS
 	EXTRN LO
-	EXTRN PO
-	EXTRN RI
-	EXTRN IOCHK
 	EXTRN EXIT
 	EXTRN ISIS
 
@@ -18,6 +18,8 @@
 	PUBLIC COUT
 	PUBLIC CIN
 	PUBLIC CSTAT
+	PUBLIC POUT
+	PUBLIC ZSOUT
 
 	CSEG
 
@@ -65,6 +67,8 @@ CCLOSE: MVI	C,1
 
 ;----------- CSTAT: return console status -----------
 
+;; XXX SMBAKER: This only works when using the video console. Fix it some day.
+
 CSTAT:  CALL	CSTS	; CONSOLE STATUS
 	RET		; IF CHR TYPED THEN (A) <- 0FFH ELSE (A) <- 0
 
@@ -82,6 +86,14 @@ CINAGN:
 	LDA	RBUF
 	CPI	0AH
 	JZ	CINAGN		; LF YOU ARE NOT WELCOME HERE. GET OUT.
+
+	CPI	60H		; automatic uppercase code
+	JM	CIN1
+	CPI	7BH
+	JP	CIN1
+	SUI	20H		; end uppercase code
+CIN1:
+	
 	POP	D
 	POP	B
 	RET
@@ -117,5 +129,25 @@ WCNT:	DW	1
 	DW	WSTAT
 WSTAT:  DS	2
 WBUF:	DS	2
+
+;----------- POUT: printer out -----------
+
+POUT:	CALL	LO	; PRINTER OUTPUT CHAR IN (C)
+	RET
+
+;----------- ZSOUT: print zero terminated string -----------
+
+ZSOUT:	PUSH	PSW
+	PUSH	B
+ZSOUT0:	LDAX	D		; String in DE. Not Preserved.
+	ORA	A
+	JZ	ZSOUT1
+	MOV	C,A
+	CALL	COUT
+	INX	D
+	JMP	ZSOUT0
+ZSOUT1: POP	B
+	POP	PSW
+	RET
 
 	END

@@ -24,9 +24,9 @@ forth.obj: forth.asm
 conio.obj: conio.asm
 	$(ISIS) :f3:asm80 conio.asm
 
-hello: hello.obj
-	$(ISIS) :f2:link hello.obj,syspds.lib to hello.lnk  MAP
-	$(ISIS) :f2:locate hello.lnk to hello MAP PRINT\(hello.map\)
+hello: hello.obj conio.obj
+	$(ISIS) :f2:link hello.obj,conio.obj,syspds.lib to hello.lnk MAP
+	$(ISIS) :f2:locate hello.lnk to hello PURGE MAP PRINT\(hello.map\)
 
 hello.hex: hello
 	$(ISIS) :f2:objhex hello to hello.hex	
