@@ -1,6 +1,6 @@
 ISIS=../simulator/isis/gnu/isis
 
-all: forth.hex hello.hex
+all: forth.hex hello.hex life.hex
 
 # .PHONY: env
 
@@ -35,7 +35,20 @@ hello-run:
 	$(ISIS) hello
 
 hello.obj: hello.asm
-	$(ISIS) :f3:asm80 hello.asm	
+	$(ISIS) :f3:asm80 hello.asm
+
+life.obj: life.asm
+	$(ISIS) :f3:asm80 life.asm
+
+life: life.obj
+	$(ISIS) :f2:link life.obj,syspds.lib to life.lnk MAP
+	$(ISIS) :f2:locate life.lnk to life PURGE MAP PRINT\(life.map\)
+
+life.hex: life
+	$(ISIS) :f2:objhex life to life.hex
+
+life-run:
+	$(ISIS) life
 
 clean:
 	rm -f *.hex *.obj *.lnk *.map forth hello
