@@ -51,4 +51,4 @@ life-run:
 	$(ISIS) life
 
 clean:
-	rm -f *.hex *.obj *.lnk *.map forth hello
+	rm -f *.hex *.obj *.lnk *.map *.lst forth hello life
