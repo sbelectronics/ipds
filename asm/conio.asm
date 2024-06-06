@@ -114,6 +114,7 @@ COUT:	PUSH	PSW
 	PUSH	B
 	PUSH	D
 	MOV	A,C
+	ANI	07FH		; strip the high bit
 	STA	WBUF
 	MVI	C,4
 	LXI	D,WBLK
