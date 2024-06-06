@@ -91,3 +91,6 @@ Prom program notes:
 Second Processor:
   FUNCT-HOME - switch CPUs
   FUNCT-UP / FUNCT-DOWN - change window size
+
+Using Kermit
+  https://www.rogerarrick.com/mds888/kermit.html
