@@ -1,12 +1,20 @@
+# Path to the ISIS simulator, which you can find at:
+# https://bionic.bloovis.com/cgit/isis/. The simulator is written
+# by Mark Alexander and allows native ISIS-II tools to be run
+# from Linux (or Windows?) making compiling easy.
+
 ISIS=../simulator/isis/gnu/isis
 
-# ZASM=../../rc2014/z80-asm/zasm-4.0/Linux/zasm
+# Most of the stuff compiles with native ISIS tools, except Nascome
+# Basic, which uses the AZZ toolchain. 
 
 ZCC = ../../z88dk/bin/zcc
 
+# So ZCC can find its assembler...
+
 export PATH := $(PATH):../../z88dk/bin
 
-all: forth.hex hello.hex life.hex argtes.hex
+all: forth.hex hello.hex life.hex argtes.hex basic.hex
 
 # .PHONY: env
 
@@ -91,5 +99,8 @@ basic: basic.obj
 basic-run: basic
 	$(ISIS) basic
 
+basic.hex: basic
+	$(ISIS) :f2:objhex basic to basic.hex
+
 clean:
-	rm -f *.hex *.obj *.lnk *.map *.lst forth hello life
+	rm -f *.hex *.obj *.lnk *.map *.lst *.tmp *.lis forth hello life basic argtes
