@@ -1,6 +1,6 @@
 ISIS=../simulator/isis/gnu/isis
 
-all: forth.hex hello.hex life.hex
+all: forth.hex hello.hex life.hex argtes.hex
 
 # .PHONY: env
 
@@ -24,6 +24,25 @@ forth.obj: forth.asm
 conio.obj: conio.asm
 	$(ISIS) :f3:asm80 conio.asm
 
+putil.obj: putil.asm
+	$(ISIS) :f3:asm80 putil.asm
+
+args.obj: args.asm
+	$(ISIS) :f3:asm80 args.asm
+
+argtes.obj: argtes.asm
+	$(ISIS) :f3:asm80 argtes.asm
+
+argtes: argtes.obj conio.obj args.obj putil.obj
+	$(ISIS) :f2:link argtes.obj,conio.obj,args.obj,putil.obj,syspds.lib to argtes.lnk MAP
+	$(ISIS) :f2:locate argtes.lnk to argtes PURGE MAP PRINT\(argtes.map\)
+
+argtes-run:
+	$(ISIS) argtes A
+
+argtes.hex:
+	$(ISIS) :f2:objhex argtes to argtes.hex
+
 hello: hello.obj conio.obj
 	$(ISIS) :f2:link hello.obj,conio.obj,syspds.lib to hello.lnk MAP
 	$(ISIS) :f2:locate hello.lnk to hello PURGE MAP PRINT\(hello.map\)
@@ -40,8 +59,8 @@ hello.obj: hello.asm
 life.obj: life.asm
 	$(ISIS) :f3:asm80 life.asm
 
-life: life.obj
-	$(ISIS) :f2:link life.obj,syspds.lib to life.lnk MAP
+life: life.obj args.obj
+	$(ISIS) :f2:link life.obj,args.obj,syspds.lib to life.lnk MAP
 	$(ISIS) :f2:locate life.lnk to life PURGE MAP PRINT\(life.map\)
 
 life.hex: life
