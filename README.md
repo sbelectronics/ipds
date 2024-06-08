@@ -6,7 +6,23 @@ Various resources and projects for Scott's iPDS-100 Personal Development System.
 
 ## ipds-120
 
-  This directory contains my clone of the ipds-120 multimodule adapter for the
-  ipds-100. This will allow you to use, for example, isbx-251 bubble memory
-  modules. See https://www.smbaker.com/adding-bubble-memory-to-an-ipds-100-personal-development-system-clonding-the-ipds-120-multimodule-adapter
-  for more information.
+This directory contains my clone of the ipds-120 multimodule adapter for the
+ipds-100. This will allow you to use, for example, isbx-251 bubble memory
+modules. See https://www.smbaker.com/adding-bubble-memory-to-an-ipds-100-personal-development-system-clonding-the-ipds-120-multimodule-adapter
+for more information.
+
+## asm
+
+This directory contains various assembly source code, including:
+
+  * Conway's Game of Life
+
+  * Fig-Forth
+
+  * Nascom Basic
+
+## PLM
+
+This directory contains various PL/M source code, including:
+
+  * Kermit

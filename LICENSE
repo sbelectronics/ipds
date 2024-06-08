@@ -1,0 +1,20 @@
+# Software included from external sources
+
+Nascom Basic / RC2014 BASIC, Fig-Forth, Kermit, and similar software
+obtained from external sources and modified here maintain the license of
+their respective authors and/or maintainers. Please see their source
+file(s) for more information. I have intended to preserve all copyright,
+license, attribution, and other notices in those files.
+
+# Software, PCBoards, Schematics, and other materials authored by Scott Baker
+
+This work is licensed under the Creative Commons Attribution-ShareAlike 3.0
+United States License. To view a copy of this license,
+visit http://creativecommons.org/licenses/by-sa/3.0/us/ or send a letter to
+Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+## Special note on PCBoards and Schematics
+
+In addition to any other provisions of the above license, you are required to
+ensure that the text "www.smbaker.com" is clearly legible on the silkscreen of
+any pcboards manufactured based on artwork from this repostory.
