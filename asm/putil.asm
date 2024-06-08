@@ -39,7 +39,7 @@ PCRLF:	PUSH	PSW
 	POP	PSW
 	RET
 
-	; --------- print 8-bit hex in A registry ---------
+	; --------- print 8-bit hex in A register ---------
 
 PHEXA:	push psw
 	push b

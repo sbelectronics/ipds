@@ -1,5 +1,11 @@
 ISIS=../simulator/isis/gnu/isis
 
+# ZASM=../../rc2014/z80-asm/zasm-4.0/Linux/zasm
+
+ZCC = ../../z88dk/bin/zcc
+
+export PATH := $(PATH):../../z88dk/bin
+
 all: forth.hex hello.hex life.hex argtes.hex
 
 # .PHONY: env
@@ -68,6 +74,22 @@ life.hex: life
 
 life-run:
 	$(ISIS) life
+
+basic.obj:
+	echo "nascom32k.asm" > nascom32k.lst
+	rm -f basic.tmp basic.asm
+	$(ZCC) +z80 -m8085 --no-crt -v -m --list -Ca-f0xFF @nascom32k.lst -o basic.tmp
+	python3 ./makeisis.py < basic.tmp > basic.asm
+	unix2dos basic.asm
+	$(ISIS) :f3:asm80 basic.asm
+
+basic: basic.obj
+	rm -f basic.map
+	$(ISIS) :f2:link basic.obj,syspds.lib to basic.lnk MAP
+	$(ISIS) :f2:locate basic.lnk to basic PURGE MAP PRINT\(basic.map\)
+
+basic-run: basic
+	$(ISIS) basic
 
 clean:
 	rm -f *.hex *.obj *.lnk *.map *.lst forth hello life
