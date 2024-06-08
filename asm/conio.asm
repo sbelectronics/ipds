@@ -25,45 +25,17 @@
 
 ;----------- COPEN: Open :ci: and :co: files -----------
 
-COPEN:	PUSH	PSW
-	PUSH	B
-	PUSH	D
-	PUSH	H
-	MVI	C,0
-	LXI	D,OBLKCI
-	CALL	ISIS
-	MVI	C,0
-	LXI	D,OBLKCO
-	CALL	ISIS
-	POP	H
-	POP	D
-	POP	B
-	POP	PSW
+COPEN:	MVI	A,0				; Stream 0 is stdout
+	STA	WAFT
+	STA	WAFT+1
+	STA	RAFT+1
+	MVI	A,1				; Stream 1 is stdin
+	STA	RAFT
 	RET
-OBLKCI:
-	DW	RAFT
-	DW	CIFILE
-	DW	1	; 1 = input
-	DW	0	; 0 = no echo
-	DW	RSTAT
-CIFILE: DB	':CI:',0
-OBLKCO:
-	DW	WAFT
-	DW	COFILE
-	DW	2	; 2 = output
-	DW	0	; 0 = no echo
-	DW	WSTAT
-COFILE: DB	':CO:',0
 
 ;----------- CCLOSE: Close :ci: and :co: files -----------
 
-CCLOSE: MVI	C,1
-	LXI	D,WBLK
-	CALL	ISIS
-	MVI	C,1
-	LXI	D,RBLK
-	CALL	ISIS
-	RET
+CCLOSE:	RET
 
 ;----------- CSTAT: return console status -----------
 
@@ -82,7 +54,7 @@ CINAGN:
 	CALL	ISIS
 	LDA	ACTUAL
 	ORA	A
-	JZ	CINAGN
+	JZ	CINAGN		; No character read - repeat
 	LDA	RBUF
 	CPI	0AH
 	JZ	CINAGN		; LF YOU ARE NOT WELCOME HERE. GET OUT.
