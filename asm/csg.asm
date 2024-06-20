@@ -17,6 +17,7 @@ $macrofile
 	PUBLIC	CSGNIT
 	PUBLIC  CSGMUT
 	PUBLIC	PLAY
+	PUBLIC  MPLAY
 
 	PUBLIC	NC3
 	PUBLIC	NC3S
@@ -160,6 +161,52 @@ BCDIV8	MACRO
 	MVI	B,0		; B = 0
 	ENDM
 
+	; LDEBC loads the word in (DE) into BC, and increments DE
+
+LDEBC	MACRO
+	LDAX	D		; Load (DE) into BC
+	INX	D	
+	MOV	C,A
+	LDAX	D
+	INX	D
+	MOV	B,A
+	ENDM
+
+	; PNOT plays the note in BC
+
+PNOT	MACRO	CHAN
+	MOV	A,C
+	ANI	0FH
+	ORI	CHAN
+	OUT	SNDPORT
+
+	MOV	A,B		; Shift hi byte left 4 bits
+	RLC
+	RLC
+	RLC
+	RLC
+	ANI	030H
+	MOV	B,A
+
+	MOV	A,C		; Shift lo byte right 4 bits
+	RRC
+	RRC
+	RRC
+	RRC
+	ANI	0FH
+	ORA	B
+	OUT	SNDPORT
+	ENDM
+
+LPVOL	MACRO	CHAN
+	LDAX	D
+	INX	D
+	INX	D
+	ORI	CHAN
+	OUT	SNDPORT
+	ENDM
+
+
 	; DELAYS - delay in seconds in A
 
 DELAYS:
@@ -227,39 +274,13 @@ PLAY:
 	ORA	C
 	JZ	PLAYX		; Quit playing
 
-	MOV	A,C
-	ANI	0FH
-	ORI	080H
-	OUT	SNDPORT
-
-	MOV	A,B		; Shift hi byte left 4 bits
-	RLC
-	RLC
-	RLC
-	RLC
-	ANI	030H
-	MOV	B,A
-
-	MOV	A,C		; Shift lo byte right 4 bits
-	RRC
-	RRC
-	RRC
-	RRC
-	ANI	0FH
-	ORA	B
-	OUT	SNDPORT
-
+	PNOT	80H		; Play Note
 	CSGDEL
 
 	MVI	A,090H		; sound on
 	OUT	SNDPORT		; atn0 = 0
 
-WAIT:	LDAX	D		; delay for the note to play
-	INX	D	
-	MOV	C,A
-	LDAX	D
-	INX	D
-	MOV	B,A
+WAIT:	LDEBC			; load BC with delay for the note to play
 	PUSH	B
 	CALL	DELAYM
 
@@ -279,5 +300,33 @@ SILNOT:
 
 PLAYX:
 	RET
+
+	; MPLAY - play 3-tone music (duration, )
+
+MPLAY:	LDEBC			; first word is the delay
+
+	PUSH	B
+
+	LDEBC
+	PNOT	80H
+	LPVOL	90H
+
+	LDEBC
+	PNOT	0A0H
+	LPVOL	0B0H
+
+	LDEBC
+	PNOT	0C0H
+	LPVOL	0D0H
+
+	POP	B
+
+	MOV	A,B
+	ORA	C
+	JZ	MPLAYX		; If BC=0, we're done
+
+	CALL	DELAYM
+	JMP	MPLAY
+MPLAYX:	RET
 
 	END
