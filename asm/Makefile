@@ -70,6 +70,19 @@ hello-run:
 hello.obj: hello.asm
 	$(ISIS) :f3:asm80 hello.asm
 
+memtes: memtes.obj conio.obj putil.obj
+	$(ISIS) :f2:link memtes.obj,conio.obj,putil.obj,syspds.lib to memtes.lnk MAP
+	$(ISIS) :f2:locate memtes.lnk to memtes PURGE MAP PRINT\(memtes.map\)
+
+memtes.hex: memtes
+	$(ISIS) :f2:objhex memtes to memtes.hex	
+
+memtes-run:
+	$(ISIS) memtes
+
+memtes.obj: memtes.asm
+	$(ISIS) :f3:asm80 memtes.asm
+
 life.obj: life.asm
 	$(ISIS) :f3:asm80 life.asm
 
@@ -82,6 +95,51 @@ life.hex: life
 
 life-run:
 	$(ISIS) life
+
+bong: bong.obj conio.obj csg.obj attach.obj
+	$(ISIS) :f2:link bong.obj,conio.obj,csg.obj,attach.obj,syspds.lib to bong.lnk MAP
+	$(ISIS) :f2:locate bong.lnk to bong PURGE MAP PRINT\(bong.map\)
+
+bong.hex: bong
+	$(ISIS) :f2:objhex bong to bong.hex
+
+bong-run:
+	$(ISIS) bong
+
+bong.obj: bong.asm
+	$(ISIS) :f3:asm80 bong.asm
+
+song: song.obj conio.obj csg.obj args.obj attach.obj
+	$(ISIS) :f2:link song.obj,conio.obj,csg.obj,args.obj,attach.obj,syspds.lib to song.lnk MAP
+	$(ISIS) :f2:locate song.lnk to song PURGE MAP PRINT\(song.map\)
+
+song.hex: song
+	$(ISIS) :f2:objhex song to song.hex
+
+song-run:
+	$(ISIS) song
+
+song.obj: song.asm
+	$(ISIS) :f3:asm80 song.asm
+
+csg.obj: csg.asm
+	$(ISIS) :f3:asm80 csg.asm
+
+attach.obj: attach.asm
+	$(ISIS) :f3:asm80 attach.asm
+
+deltes: deltes.obj conio.obj csg.obj
+	$(ISIS) :f2:link deltes.obj,conio.obj,csg.obj,syspds.lib to deltes.lnk MAP
+	$(ISIS) :f2:locate deltes.lnk to deltes PURGE MAP PRINT\(deltes.map\)
+
+deltes.hex: deltes
+	$(ISIS) :f2:objhex deltes to deltes.hex
+
+deltes-run:
+	$(ISIS) deltes
+
+deltes.obj: deltes.asm
+	$(ISIS) :f3:asm80 deltes.asm	
 
 basic.obj:
 	echo "nascom32k.asm" > nascom32k.lst
@@ -103,4 +161,4 @@ basic.hex: basic
 	$(ISIS) :f2:objhex basic to basic.hex
 
 clean:
-	rm -f *.hex *.obj *.lnk *.map *.lst *.tmp *.lis forth hello life basic argtes
+	rm -f *.hex *.obj *.lnk *.map *.lst *.tmp *.lis forth hello life basic argtes bong wiltel song memtes deltes
