@@ -258,7 +258,7 @@ CSGMUT:	MVI	A,00
 	OUT	MUTPORT
 	RET
 
-	; PLAY - play notes in DE
+	; PLAY - play (note, duration) in DE (N1, D1, N2, D2, N3, D3, ...)
 
 PLAY:
 	LDAX	D		; Low byte of note
@@ -301,7 +301,7 @@ SILNOT:
 PLAYX:
 	RET
 
-	; MPLAY - play 3-tone music (duration, )
+	; MPLAY - play 3-tone music (duration, N1, V1, N2, V2, N3, V3)
 
 MPLAY:	LDEBC			; first word is the delay
 

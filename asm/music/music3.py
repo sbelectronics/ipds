@@ -1,3 +1,5 @@
+# Create 3-channel music file from TI sound calls
+
 import sys
 
 def nconv(s):
