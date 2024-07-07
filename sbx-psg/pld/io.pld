@@ -5,7 +5,7 @@ Date 09/1/2023;
 Designer Scott Baker;
 Company ;
 Location ;
-Assembly iSBX CSG Module;
+Assembly iSBX PSG Module;
 Device G22V10;
 
 /* Inputs: */
@@ -16,15 +16,15 @@ Pin 4  = !MCS0;
 Pin 5  = MA0;
 Pin 6  = MA1;
 Pin 7  = MA2;
-Pin 8  = !SND_WAIT;
+Pin 8  = NC6;
 Pin 9  = NC0;
 Pin 10 = NC1;
 Pin 11 = NC2;
 Pin 13 = NC3;
 
 /* Outputs:  */
-Pin 23 = !SND_LAT;
-Pin 22 = !SND_CS;
+Pin 23 = BC1;
+Pin 22 = BDIR;
 Pin 21 = D0;
 Pin 20 = !MPST;
 Pin 19 = MINTR0;
@@ -36,20 +36,14 @@ Pin 14 = NC4;
 
 FIELD ADDR = [MA2..MA0];
 
-SND_CS = ((ADDR:3) & MCS0 & IOW) # SND_WAIT;
-SND_LAT = (ADDR:3) & MCS0 & IOW;
+IO_WRT_REG = (ADDR:5) & MCS0 & IOW;
+IO_WRT_VAL = (ADDR:6) & MCS0 & IOW;
+IO_RD_VAL = (ADDR:6) & MCS0 & IOR;
 
 RESETO = RESETI;
 
-UNMUTE = (ADDR:4) & MCS0 & IOW & D0;
-MUTE = (ADDR:4) & MCS0 & IOW & (!D0);
-
-/*
-TMP = RESETI # MUTE # (TMP & !UNMUTE);
-MUTEO = 'b'1;
-MUTEO.OE = TMP;
-*/
-
+UNMUTE = (ADDR:7) & MCS0 & IOW & D0;
+MUTE = (ADDR:7) & MCS0 & IOW & (!D0);
 MUTEO = RESETI # MUTE # (MUTEO & !UNMUTE);
 
 MPST = 'b'1;
@@ -57,4 +51,5 @@ MPST = 'b'1;
 MINTR0 = 'b'0;
 MINTR1 = 'b'0;
 
-
+BDIR = IO_WRT_REG # IO_WRT_VAL;
+BC1 = IO_WRT_REG # IO_RD_VAL;
