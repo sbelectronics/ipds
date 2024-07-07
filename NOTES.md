@@ -94,3 +94,55 @@ Second Processor:
 
 Using Kermit
   https://www.rogerarrick.com/mds888/kermit.html
+
+Files I put on the bubble:
+
+DIRECTORY OF :F4:BUB
+NAME  .EXT  BLKS   LENGTH   ATTR    NAME  .EXT  BLKS   LENGTH   ATTR
+DIR           28     6625           SERIAL        16     3127
+SUBMIT        20     4692           DEBUG         12     2566
+ASSIGN        16     3129           COPY          36     8487
+HEXOBJ        20     4344           DELETE        20     4699
+KERMIT        52    12136           FORTH         28     6851
+SAY           72    17760           SER   .CSD     4       79
+VID   .CSD     4       50           LIFE           8     1136
+ATTACH         4      503           BONG           4      467
+                                344
+20 FREE / 512 TOTAL BLOCK
+
+Set up the bubble:
+
+COPY :F1:DIR TO :F4:
+COPY :F1:SUBMIT TO :F4:
+COPY :F1:ASSIGN TO :F4:
+COPY :F1:ATTACH TO :F4:
+COPY :F1:SERIAL TO :F4:
+COPY :F1:DEBUG TO :F4:
+COPY :F1:COPY TO :F4:
+COPY :F1:DELETE TO :F4:
+COPY :F2:SER.CSD TO :F4:
+COPY :F2:VID.CSD TO :F4:
+COPY :F2:KERMIT TO :F4:
+
+Set up backup disk
+
+COPY :F0:DIR TO :F1:
+COPY :F0:SUBMIT TO :F1:
+COPY :F0:ASSIGN TO :F1:
+COPY :F0:ATTACH TO :F1:
+COPY :F0:SERIAL TO :F1:
+COPY :F0:DEBUG TO :F1:
+COPY :F0:COPY TO :F1:
+COPY :F0:DELETE TO :F1:
+
+Power supply
+
+* C2-C7: 200V 100uF
+
+* C14,C15: 25V, 470uF
+
+* C16, C17, C18, C19, C21: 10V, 1000uF (C21, C19 swapped from schem)
+
+* C20, C25: 16V, 470uF
+
+* C23, C24: 100uF, 25V
