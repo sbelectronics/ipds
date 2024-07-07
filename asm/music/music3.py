@@ -2,6 +2,8 @@
 
 import sys
 
+psgmode = ("PSG" in sys.argv)
+
 def nconv(s):
   freq = int(s)
   if freq==0:
@@ -28,6 +30,11 @@ def convert(fn):
     parts[1] = nconv(parts[1])
     parts[3] = nconv(parts[3])
     parts[5] = nconv(parts[5])
+
+    if psgmode:
+      parts[2] = "%d" % (15-int(parts[2]))
+      parts[4] = "%d" % (15-int(parts[4]))
+      parts[6] = "%d" % (15-int(parts[6]))
 
     print("\tDW\t%s" % (", ".join(parts)))
   print("\tDW\t0,0,15,0,15,0,15")

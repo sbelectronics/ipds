@@ -122,8 +122,24 @@ song-run:
 song.obj: song.asm
 	$(ISIS) :f3:asm80 song.asm
 
+aysong: aysong.obj conio.obj psg.obj args.obj attach.obj
+	$(ISIS) :f2:link aysong.obj,conio.obj,psg.obj,args.obj,attach.obj,syspds.lib to aysong.lnk MAP
+	$(ISIS) :f2:locate aysong.lnk to aysong PURGE MAP PRINT\(aysong.map\)
+
+aysong.hex: aysong
+	$(ISIS) :f2:objhex aysong to aysong.hex
+
+aysong-run:
+	$(ISIS) aysong
+
+aysong.obj: aysong.asm
+	$(ISIS) :f3:asm80 aysong.asm
+
 csg.obj: csg.asm
 	$(ISIS) :f3:asm80 csg.asm
+
+psg.obj: psg.asm
+	$(ISIS) :f3:asm80 psg.asm
 
 attach.obj: attach.asm
 	$(ISIS) :f3:asm80 attach.asm
@@ -144,7 +160,7 @@ deltes.obj: deltes.asm
 basic.obj:
 	echo "nascom32k.asm" > nascom32k.lst
 	rm -f basic.tmp basic.asm
-	$(ZCC) +z80 -m8085 --no-crt -v -m --list -Ca-f0xFF @nascom32k.lst -o basic.tmp
+	$(ZCC) +micro8085 -m8085 --no-crt -v -m --list -Ca-f0xFF @nascom32k.lst -o basic.tmp
 	python3 ./makeisis.py < basic.tmp > basic.asm
 	unix2dos basic.asm
 	$(ISIS) :f3:asm80 basic.asm
