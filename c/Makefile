@@ -41,5 +41,41 @@ world-run: world
 world.hex: world
 	$(ISIS) :f2:objhex world to world.hex
 
+brtprm.obj:
+	rm -f brtprm.tmp brtprm.asm
+	$(ZCC) +isis brtprm.c -o brtprm.tmp
+	python3 ../asm/makeisis.py < brtprm.tmp > brtprm.asm
+	unix2dos brtprm.asm
+	$(ISIS) :f3:asm80 brtprm.asm
+
+brtprm: brtprm.obj
+	rm -f brtprm.map
+	$(ISIS) :f2:link brtprm.obj,syspds.lib to brtprm.lnk MAP
+	$(ISIS) :f2:locate brtprm.lnk to brtprm PURGE MAP PRINT\(brtprm.map\)
+
+brtprm-run: brtprm
+	$(ISIS) brtprm
+
+brtprm.hex: brtprm
+	$(ISIS) :f2:objhex brtprm to brtprm.hex
+
+maze.obj:
+	rm -f maze.tmp maze.asm
+	$(ZCC) +isis maze.c -o maze.tmp
+	python3 ../asm/makeisis.py < maze.tmp > maze.asm
+	unix2dos maze.asm
+	$(ISIS) :f3:asm80 maze.asm
+
+maze: maze.obj
+	rm -f maze.map
+	$(ISIS) :f2:link maze.obj,syspds.lib to maze.lnk MAP
+	$(ISIS) :f2:locate maze.lnk to maze PURGE MAP PRINT\(maze.map\)
+
+maze-run: maze
+	$(ISIS) maze
+
+maze.hex: maze
+	$(ISIS) :f2:objhex maze to maze.hex
+
 clean:
-	rm -f *.hex *.obj *.lnk *.map *.lst *.tmp *.lis forth hello life world argtes
+	rm -f *.hex *.obj *.lnk *.map *.lst *.tmp *.lis world brtprm maze
