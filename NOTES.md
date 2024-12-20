@@ -137,12 +137,35 @@ COPY :F0:DELETE TO :F1:
 
 Power supply
 
-* C2-C7: 200V 100uF
+  * C2-C7: 200V 100uF
 
-* C14,C15: 25V, 470uF
+  * C14,C15: 25V, 470uF
 
-* C16, C17, C18, C19, C21: 10V, 1000uF (C21, C19 swapped from schem)
+  * C16, C17, C18, C19, C21: 10V, 1000uF (C21, C19 swapped from schem)
 
-* C20, C25: 16V, 470uF
+  * C20, C25: 16V, 470uF
 
-* C23, C24: 100uF, 25V
+  * C23, C24: 100uF, 25V
+
+  * R18 brn-blk-brn - 100 (not measured)
+
+  * R19 brn-blk-red - 1K (not measured)
+
+  * R20 grn-blu-red - 5.6K (not measured)
+
+  * R21 - 10k pot
+
+  * R22 - grn-blu-ora - 56K (not measured)
+
+  * 6/2024 - replaced most of the caps including the output filters and the 12V input filters.
+
+  * 7/7/2024 - found bubble board not working again. Measured about 4.55V at the IPDS120 after the fuse. Replaced C16-C19, the 5V caps before the inductor. Now reading 4.87V, which is consistent with voltage drop on the pico fuse.
+
+  * requirements:
+
+      * +5V - 9.9 A
+      * +12V1 - 2.92 A
+      * +12V2 - 1.4 A
+      * -12V - 0.51 A
+
+      * possible meanwell RT-125B. PPT-125B is close but probably not good enough.
