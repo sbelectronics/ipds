@@ -85,6 +85,7 @@ char *argv[];
 	char x,y;
 	r = 30;
 	c = 30;
+
 	/* a pretty terrible command-line parser... */
 	if (argc == 1) {
         /* default rows and columns */
@@ -155,13 +156,13 @@ lb:
 			k+=p[s]=h[s]&&(t==0||j<(f<16!=t<16));
 		} 
 	}
-	g=e; 
+	g=e;
 	if (k!=0) goto la; 
 	if (u==v) goto lc; 
 	e=n[v++]; 
 	goto lb;
 lc:
-	printf("  "); 
+	printf("  ");
 #ifdef V10
 	for(s=2; s<=c; ++s) printf(" _");
 #else
@@ -169,7 +170,7 @@ lc:
 #endif
 	printf("\n");
 	for(s=0; s<r; ++s) { 
-		for (t=0; t<c; ++t) { 
+		for (t=0; t<c; ++t) {
 			u=z[t+s*c];
 			v=u/4; 
 #ifdef V10
@@ -179,8 +180,9 @@ lc:
 #endif
 			v=u/8; 
 			y=(v==(2*(v/2)))?'_':' ';
-			printf("%c%c",x,y); 
+			printf("%c%c",x,y);
 		} 
-		printf("|\n"); 
+		printf("|\n");
 	}
+	return 0;
 }
