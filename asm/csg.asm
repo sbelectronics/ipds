@@ -123,11 +123,7 @@ NOTE16	EQU	NOTE1/16*7/8
 
 SIL	EQU	0FFFFH
 
-; These two ports are used for the multimodule board. This puts it in
-; multimodule slot #4.
-
-SNDPORT	EQU	073H
-MUTPORT	EQU	074H
+$INCLUDE(PORTS.INC)
 
 	; CSGDEL delays because the CSG is slow
 
@@ -178,7 +174,7 @@ PNOT	MACRO	CHAN
 	MOV	A,C
 	ANI	0FH
 	ORI	CHAN
-	OUT	SNDPORT
+	OUT	CSGPORT
 
 	MOV	A,B		; Shift hi byte left 4 bits
 	RLC
@@ -195,7 +191,7 @@ PNOT	MACRO	CHAN
 	RRC
 	ANI	0FH
 	ORA	B
-	OUT	SNDPORT
+	OUT	CSGPORT
 	ENDM
 
 LPVOL	MACRO	CHAN
@@ -203,7 +199,7 @@ LPVOL	MACRO	CHAN
 	INX	D
 	INX	D
 	ORI	CHAN
-	OUT	SNDPORT
+	OUT	CSGPORT
 	ENDM
 
 
@@ -237,25 +233,25 @@ DELM1:  DCX	B
 	; CSGNIT - initialize the CSG and unmute the amp
 
 CSGNIT:	MVI	A,09FH
-	OUT	SNDPORT
+	OUT	CSGPORT
 	CSGDEL
 	MVI	A,0BFH
-	OUT	SNDPORT
+	OUT	CSGPORT
 	CSGDEL
 	MVI	A,0DFH
-	OUT	SNDPORT
+	OUT	CSGPORT
 	CSGDEL
 	MVI	A,0FFH
-	OUT	SNDPORT
+	OUT	CSGPORT
 	CSGDEL
 	MVI	A,001H		; Unmute by default
-	OUT	MUTPORT
+	OUT	CSMPORT
 	RET
 
 	; CSGMUT - mute the amp
 
 CSGMUT:	MVI	A,00
-	OUT	MUTPORT
+	OUT	CSMPORT
 	RET
 
 	; PLAY - play (note, duration) in DE (N1, D1, N2, D2, N3, D3, ...)
@@ -278,14 +274,14 @@ PLAY:
 	CSGDEL
 
 	MVI	A,090H		; sound on
-	OUT	SNDPORT		; atn0 = 0
+	OUT	CSGPORT		; atn0 = 0
 
 WAIT:	LDEBC			; load BC with delay for the note to play
 	PUSH	B
 	CALL	DELAYM
 
 	MVI	A,09FH		; sound off
-	OUT	SNDPORT		; atn0 = F
+	OUT	CSGPORT		; atn0 = F
 
 	POP	B		; delay 1/8 of the note length after
 	BCDIV8

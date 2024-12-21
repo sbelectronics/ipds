@@ -1,3 +1,8 @@
+# Target. Set this to either idps or sbc. This will determine
+# which port range is used for the multimodules.
+
+TARGET ?= ipds
+
 # Path to the ISIS simulator, which you can find at:
 # https://bionic.bloovis.com/cgit/isis/. The simulator is written
 # by Mark Alexander and allows native ISIS-II tools to be run
@@ -21,6 +26,20 @@ all: forth.hex hello.hex life.hex argtes.hex basic.hex
 export ISIS_F1=../simulator/isis/intel/plm80
 export ISIS_F2=../simulator/isis/intel/utils
 export ISIS_F3=../simulator/isis/intel/asm80
+
+.PHONY: ports
+.PHONY: ipds
+.PHONY: rambrd
+
+ipds:
+	echo "; edit ipds.inc instead of this file" > ports.inc
+	cat ipds.inc >> ports.inc
+
+rambrd:
+	echo "; edit sbc.inc instead of this file" > ports.inc
+	cat rambrd.inc >> ports.inc
+
+ports: $(TARGET)
 
 forth : forth.obj conio.obj
 	$(ISIS) :f2:link forth.obj,conio.obj,syspds.lib to forth.lnk
@@ -54,7 +73,7 @@ argtes: argtes.obj conio.obj args.obj putil.obj
 argtes-run:
 	$(ISIS) argtes A
 
-argtes.hex:
+argtes.hex: argtes
 	$(ISIS) :f2:objhex argtes to argtes.hex
 
 hello: hello.obj conio.obj
@@ -135,10 +154,10 @@ aysong-run:
 aysong.obj: aysong.asm
 	$(ISIS) :f3:asm80 aysong.asm
 
-csg.obj: csg.asm
+csg.obj: ports csg.asm
 	$(ISIS) :f3:asm80 csg.asm
 
-psg.obj: psg.asm
+psg.obj: ports psg.asm
 	$(ISIS) :f3:asm80 psg.asm
 
 attach.obj: attach.asm
@@ -177,4 +196,4 @@ basic.hex: basic
 	$(ISIS) :f2:objhex basic to basic.hex
 
 clean:
-	rm -f *.hex *.obj *.lnk *.map *.lst *.tmp *.lis forth hello life basic argtes bong wiltel song memtes deltes
+	rm -f ports.inc *.hex *.obj *.lnk *.map *.lst *.tmp *.lis forth hello life basic argtes bong wiltel song memtes deltes

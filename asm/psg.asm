@@ -114,12 +114,7 @@ NOTE16	EQU	NOTE1/16*7/8
 
 SIL	EQU	0FFFFH
 
-; These two ports are used for the multimodule board. This puts it in
-; multimodule slot #4.
-
-PSGREG	EQU	075H
-PSGVAL	EQU	076H
-MUTPORT	EQU	077H
+$INCLUDE(PORTS.INC)
 
 	; PSGDEL delays because the PSG is slow
 
@@ -216,13 +211,13 @@ PSGNIT:	MVI	A,7
 	OUT	PSGVAL
 	PSGDEL
 	MVI	A,001H		; Unmute by default
-	OUT	MUTPORT
+	OUT	PSMPORT
 	RET
 
 	; PSGMUT - mute the amp
 
 PSGMUT:	MVI	A,00H
-	OUT	MUTPORT
+	OUT	PSMPORT
 	RET
 
 	; PLAY - play (note, duration) in DE (N1, D1, N2, D2, N3, D3, ...)
