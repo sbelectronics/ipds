@@ -1,4 +1,4 @@
-# Target. Set this to either idps or sbc. This will determine
+# Target. Set this to either idps or rambrd. This will determine
 # which port range is used for the multimodules.
 
 TARGET ?= ipds
