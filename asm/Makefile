@@ -36,7 +36,7 @@ ipds:
 	cat ipds.inc >> ports.inc
 
 rambrd:
-	echo "; edit sbc.inc instead of this file" > ports.inc
+	echo "; edit rambrd.inc instead of this file" > ports.inc
 	cat rambrd.inc >> ports.inc
 
 ports: $(TARGET)
