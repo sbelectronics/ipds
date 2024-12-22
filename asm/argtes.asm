@@ -6,6 +6,9 @@
 ;	Call with "argtest A C13 D47 Z" or similar
 ;	   should print A=0, C=0D, D=2F, Z=0. Others = FF
 ;
+;	Can use hex numbers by using "0X"
+;	   for example "argtes J 0X3F"
+;
 ; ISIS system calls
 ;
 	EXTRN COUT

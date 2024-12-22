@@ -33,6 +33,33 @@
 	PUBLIC FLAGY
 	PUBLIC FLAGZ
 
+	PUBLIC SETA
+	PUBLIC SETB
+	PUBLIC SETC
+	PUBLIC SETD
+	PUBLIC SETE
+	PUBLIC SETF
+	PUBLIC SETG
+	PUBLIC SETH
+	PUBLIC SETI
+	PUBLIC SETJ
+	PUBLIC SETK
+	PUBLIC SETL
+	PUBLIC SETM
+	PUBLIC SETN
+	PUBLIC SETO
+	PUBLIC SETP
+	PUBLIC SETQ
+	PUBLIC SETR
+	PUBLIC SETS
+	PUBLIC SETT
+	PUBLIC SETU
+	PUBLIC SETV
+	PUBLIC SETW
+	PUBLIC SETX
+	PUBLIC SETY
+	PUBLIC SETZ
+
 NOTSET	EQU	255
 
 	CSEG
@@ -43,6 +70,11 @@ NOTSET	EQU	255
 ;; <C> is an uppercase letter and <n> is an optional decimal number.
 ;; Stores the flag in the FLAG<C> variable. If unset, FLAG<C> will
 ;; have 0xFF in it.
+;;
+;; Each flag has both a FLAG<C> variable and a SET<C> variable.
+;; The "SET" variable can be used to determine whether a FLAG variable
+;; was set (otherwise, it's impossible to determine whether a FLAG
+;; is unset or a FLAG is set to 0xFF)
 
 DOFLAG:	MVI	C, 3
 	LXI	D, RBLK
@@ -69,13 +101,22 @@ LOOP1:	CALL	TOUPPR
 
 	SUI	41H		; offset so 'A' = 0
 
-	LXI	H, FLAGA	; HL = (FLAGA + A)
+	LXI	H, SETA	; 	HL = (SETA + A)
 	ADD	L		; Is there a better way to do HL = HL + A ?
 	MOV	L,A
 	MOV	A,H
 	ACI	0
 	MOV	H,A
-	MVI	M,0		; set flag by storing 0
+	MVI	M,0		; set the set bit by storing 0
+
+	MOV	A,L		; Move HL from SETA+A to FLAGA+A
+	ADI	(FLAGA-SETA)
+	MOV	L,A
+	MOV	A,H
+	ACI	0
+	MOV	H,A
+	MVI	M,0		; set initial value of flag to 0
+
 	JMP	LOOP
 
 NOTFLG: CPI	30H		; it's not a flag, is it a digit?
@@ -176,6 +217,37 @@ ACTUAL: DW	0
 STATUS:	DW	0
 BUFFER: DS	128
 	DB	0
+
+;; SET is set to 0xFF if the flags was unset or 0x00 if the flag was set
+
+SETA:	DB	NOTSET
+SETB:	DB	NOTSET
+SETC:	DB	NOTSET
+SETD:	DB	NOTSET
+SETE:	DB	NOTSET
+SETF:	DB	NOTSET
+SETG:	DB	NOTSET
+SETH:	DB	NOTSET
+SETI:	DB	NOTSET
+SETJ:	DB	NOTSET
+SETK:	DB	NOTSET
+SETL:	DB	NOTSET
+SETM:	DB	NOTSET
+SETN:	DB	NOTSET
+SETO:	DB	NOTSET
+SETP:	DB	NOTSET
+SETQ:	DB	NOTSET
+SETR:	DB	NOTSET
+SETS:	DB	NOTSET
+SETT:	DB	NOTSET
+SETU:	DB	NOTSET
+SETV:	DB	NOTSET
+SETW:	DB	NOTSET
+SETX:	DB	NOTSET
+SETY:	DB	NOTSET
+SETZ:	DB	NOTSET
+
+;; FLAG contains the initial value of the flag. Default is 0xFF.
 
 FLAG0:	DB	NOTSET
 FLAGA:	DB	NOTSET

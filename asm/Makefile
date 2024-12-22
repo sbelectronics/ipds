@@ -19,7 +19,7 @@ ZCC = ../../z88dk/bin/zcc
 
 export PATH := $(PATH):../../z88dk/bin
 
-all: forth.hex hello.hex life.hex argtes.hex basic.hex song.hex aysong.hex bong.hex memtes.hex deltes.hex
+all: forth.hex hello.hex life.hex argtes.hex basic.hex song.hex aysong.hex bong.hex memtes.hex deltes.hex til311.hex
 
 # .PHONY: env
 
@@ -198,5 +198,15 @@ basic-run: basic
 basic.hex: basic
 	$(ISIS) :f2:objhex basic to basic.hex
 
+til311: til311.obj conio.obj args.obj putil.obj
+	$(ISIS) :f2:link til311.obj,conio.obj,args.obj,putil.obj,syspds.lib to til311.lnk MAP
+	$(ISIS) :f2:locate til311.lnk to til311 PURGE MAP PRINT\(til311.map\)
+
+til311.hex: til311
+	$(ISIS) :f2:objhex til311 to til311.hex
+
+til311.obj: ports til311.asm
+	$(ISIS) :f3:asm80 til311.asm
+
 clean:
-	rm -f ports.inc *.hex *.obj *.lnk *.map *.lst *.tmp *.lis forth hello life basic argtes bong wiltel song memtes deltes
+	rm -f ports.inc *.hex *.obj *.lnk *.map *.lst *.tmp *.lis forth hello life basic argtes bong wiltel song memtes deltes til311 aysong
