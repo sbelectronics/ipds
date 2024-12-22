@@ -60,12 +60,7 @@ LOOP:	LDAX	D		; A = character from arg string
 	ORA	A		; We hit a null ... how?
 	RZ			; We are done
 
-	CPI	60H		; is less than 'a' ?
-	JM	NOTLC
-	CPI	7BH		; Is greater than 'z' ?
-	JP	NOTLC
-	SUI	20H		; Convert lowercase to upper
-NOTLC:
+LOOP1:	CALL	TOUPPR
 
 	CPI	41H		; less than 'A' ?
 	JM	NOTFLG
@@ -83,10 +78,29 @@ NOTLC:
 	MVI	M,0		; set flag by storing 0
 	JMP	LOOP
 
-NOTFLG: CPI	30H
-	JM	NOTDIG
+NOTFLG: CPI	30H		; it's not a flag, is it a digit?
+	JM	LOOP		; nope.
 	CPI	3AH
-	JP	NOTDIG
+	JP	LOOP		; nope.
+	JMP	DIGLP1		; yep, switch to digit loop
+
+	JMP	LOOP
+
+; loop for processing decimal numbers
+
+DIGLP:  LDAX	D		; A = character from arg string
+	INX	D		; point to next character
+	CPI	0DH		; Should be terminated with CR
+	RZ			; We are done
+	ORA	A		; We hit a null ... how?
+	RZ			; We are done
+DIGLP1: CALL	TOUPPR
+	CPI	058H		; Is "X" ?
+	JZ	HEXLP		; Yes. must be hex number
+	CPI	30H		; Is it a digit?
+	JM	LOOP1		; Nope.
+	CPI	3AH		
+	JP	LOOP1		; Hope.
 
 	SUI	30H		; offset so '1' = 0
 	MOV	B,A		; save A into B
@@ -97,9 +111,39 @@ NOTFLG: CPI	30H
 	ADD	B		; Add the new lower digit
 
 	MOV	M,A		; store flag back out
-	JMP	LOOP
+	JMP	DIGLP		; Look for next digit
 
-NOTDIG: JMP	LOOP
+; loop for processing hex numbers
+
+HEXLP:	LDAX	D		; A = character from arg string
+	INX	D		; point to next character
+	CPI	0DH		; Should be terminated with CR
+	RZ			; We are done
+	ORA	A		; We hit a null ... how?
+	RZ			; We are done
+HEXLP1:	CALL	TOUPPR
+	CPI	41H		; less than 'A' ?
+	JM	NOTAF
+	CPI	47H		; Greater than 'F' ?
+	JP	NOTAF
+	SUI	37H		; A = A - ord('A') + 10D
+	JMP	GOTHD
+NOTAF:	CPI	30H		; Is it a 0-9 digit?
+	JM	LOOP1		; Nope.
+	CPI	3AH		
+	JP	LOOP1		; Hope.
+	SUI	30H		; A = A - ord('0')
+GOTHD:	MOV	B,A	        ; Save digit into B
+	MOV	A,M		; Get current value
+	RLC			; A = A << 4
+	RLC
+	RLC
+	RLC
+	ADD	B		; A = A + B
+	MOV	M,A		; store flag back out
+	JMP	HEXLP		; look for next hex digit
+
+; subroutine - multiply by 10
 
 MULA10: PUSH	B
 	MOV	C,A		; C = A
@@ -111,6 +155,15 @@ MULA10: PUSH	B
 	ADD	C		; A = A + C
 	POP	B
 	RET
+
+; subroutine - convert to uppercase
+
+TOUPPR:	CPI	60H		; is less than 'a' ?
+	JM	NOTLC
+	CPI	7BH		; Is greater than 'z' ?
+	JP	NOTLC
+	SUI	20H		; Convert lowercase to upper
+NOTLC:	RET
 
 	DSEG
 RBLK:

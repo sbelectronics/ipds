@@ -19,7 +19,7 @@ ZCC = ../../z88dk/bin/zcc
 
 export PATH := $(PATH):../../z88dk/bin
 
-all: forth.hex hello.hex life.hex argtes.hex basic.hex
+all: forth.hex hello.hex life.hex argtes.hex basic.hex song.hex aysong.hex bong.hex memtes.hex deltes.hex
 
 # .PHONY: env
 
@@ -71,7 +71,10 @@ argtes: argtes.obj conio.obj args.obj putil.obj
 	$(ISIS) :f2:locate argtes.lnk to argtes PURGE MAP PRINT\(argtes.map\)
 
 argtes-run:
-	$(ISIS) argtes A
+	echo "--- everything FF"
+	$(ISIS) argtes
+	echo "--- A:00, B:00, C:00 D:7B E:E7 F:01 G:10 H:33 I:A3 J:01 K:00 L:00 M:00 N:00 O:FF P:FE Q:07 R:09 X:2C"
+	$(ISIS) argtes A B C D123 E 231 F 001 G 0x10 H0X33 I0XA3 J 0x01 K 0 L 0x00 M N P 0XFE Q7R9 X 44
 
 argtes.hex: argtes
 	$(ISIS) :f2:objhex argtes to argtes.hex
