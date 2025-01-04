@@ -44,7 +44,12 @@ RESETO = RESETI;
 
 UNMUTE = (ADDR:7) & MCS0 & IOW & D0;
 MUTE = (ADDR:7) & MCS0 & IOW & (!D0);
-MUTEO = RESETI # MUTE # (MUTEO & !UNMUTE);
+MUTEO = (RESETI & RESETO) # MUTE # (MUTEO & !UNMUTE);
+
+/* note - can be very sensitive to transients on RESETI, so
+ * the above qualifies both RESETI and RESETO, adding some
+ * gate delay.
+ */
 
 MPST = 'b'1;
 
