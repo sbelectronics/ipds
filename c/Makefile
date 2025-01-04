@@ -15,7 +15,7 @@ ZCC = ../../z88dk/bin/zcc
 export PATH := $(PATH):../../z88dk/bin
 export ZCCCFG := ../../z88dk/lib/config
 
-all: world.hex
+all: world.hex brtprm.hex maze.hex hang.hex
 
 # .PHONY: env
 
@@ -77,5 +77,23 @@ maze-run: maze
 maze.hex: maze
 	$(ISIS) :f2:objhex maze to maze.hex
 
+hang.obj:
+	rm -f hang.tmp hang.asm
+	$(ZCC) +isis hang.c -o hang.tmp
+	python3 ../asm/makeisis.py < hang.tmp > hang.asm
+	unix2dos hang.asm
+	$(ISIS) :f3:asm80 hang.asm
+
+hang: hang.obj
+	rm -f hang.map
+	$(ISIS) :f2:link hang.obj,syspds.lib to hang.lnk MAP
+	$(ISIS) :f2:locate hang.lnk to hang PURGE MAP PRINT\(hang.map\)
+
+hang-run: hang
+	$(ISIS) hang
+
+hang.hex: hang
+	$(ISIS) :f2:objhex hang to hang.hex
+
 clean:
-	rm -f *.hex *.obj *.lnk *.map *.lst *.tmp *.lis world brtprm maze
+	rm -f *.hex *.obj *.lnk *.map *.lst *.tmp *.lis world brtprm maze hang
