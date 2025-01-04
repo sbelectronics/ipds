@@ -1,5 +1,9 @@
 ; Ports for iPDS
 
+; iPDS uses ATTACH syscall when attaching multimodules
+
+DOATTCH EQU     1
+
 ; CSG Multimodule
 
 CSGPORT	EQU	073H

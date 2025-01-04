@@ -1,5 +1,9 @@
 ; Ports for SBC-80/24 with scott's ramboard
 
+; 80/24 does not use ATTACH syscall when attaching multimodules
+
+DOATTCH EQU     0
+
 ; CSG Multimodule
 
 CSGPORT	EQU	0B3H

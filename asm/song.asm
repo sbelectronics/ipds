@@ -92,7 +92,9 @@ T15N1	EQU	1548				; tempo=155
 T15N2	EQU	T15N1/2*7/8			; see csg.asm for calculation instructions
 T15N4	EQU	T15N1/4*7/8
 T15N8	EQU	T15N1/8*7/8
-T15N16	EQU	T15N1/16*7/8	
+T15N16	EQU	T15N1/16*7/8
+
+$INCLUDE(PORTS.INC)
 
 ORIG:	NOP					; Some NOPs makes it easier for the disassembler to sync
 	NOP
@@ -102,7 +104,9 @@ ORIG:	NOP					; Some NOPs makes it easier for the disassembler to sync
 
 	CALL	DOFLAG
 
+        IF      DOATTCH
 	CALL	ATTACH				; Attach multimodule row 1
+        ENDIF
 
 	CALL	CSGNIT				; SIL and unmute
 

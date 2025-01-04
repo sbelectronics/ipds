@@ -141,7 +141,7 @@ song.hex: song
 song-run:
 	$(ISIS) song
 
-song.obj: song.asm
+song.obj: ports song.asm
 	$(ISIS) :f3:asm80 song.asm
 
 aysong: aysong.obj conio.obj psg.obj args.obj attach.obj
@@ -154,7 +154,7 @@ aysong.hex: aysong
 aysong-run:
 	$(ISIS) aysong
 
-aysong.obj: aysong.asm
+aysong.obj: ports aysong.asm
 	$(ISIS) :f3:asm80 aysong.asm
 
 csg.obj: ports csg.asm
@@ -208,5 +208,25 @@ til311.hex: til311
 til311.obj: ports til311.asm
 	$(ISIS) :f3:asm80 til311.asm
 
+sertes.obj: sertes.asm
+	$(ISIS) :f3:asm80 sertes.asm
+
+sertes: sertes.obj conio.obj putil.obj
+	$(ISIS) :f2:link sertes.obj,conio.obj,putil.obj,syspds.lib to sertes.lnk MAP
+	$(ISIS) :f2:locate sertes.lnk to sertes PURGE MAP PRINT\(sertes.map\)
+
+sertes.hex: sertes
+	$(ISIS) :f2:objhex sertes to sertes.hex
+
+coptes.obj: coptes.asm
+	$(ISIS) :f3:asm80 coptes.asm
+
+coptes: coptes.obj conio.obj putil.obj
+	$(ISIS) :f2:link coptes.obj,conio.obj,putil.obj,syspds.lib to coptes.lnk MAP
+	$(ISIS) :f2:locate coptes.lnk to coptes PURGE MAP PRINT\(coptes.map\)
+
+coptes.hex: coptes
+	$(ISIS) :f2:objhex coptes to coptes.hex
+
 clean:
-	rm -f ports.inc *.hex *.obj *.lnk *.map *.lst *.tmp *.lis forth hello life basic argtes bong wiltel song memtes deltes til311 aysong
+	rm -f ports.inc *.hex *.obj *.lnk *.map *.lst *.tmp *.lis forth hello life basic argtes bong wiltel song memtes deltes til311 aysong sertes
