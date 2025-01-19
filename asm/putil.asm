@@ -10,6 +10,9 @@
 	PUBLIC	PSPACE
 	PUBLIC	PCRLF
 	PUBLIC	PHEXA
+	PUBLIC	PRNDEC
+	PUBLIC	DIV10
+	PUBLIC	MUL10
 
 	CSEG
 
@@ -73,5 +76,47 @@ HEXASC:	push b
 HEXAS1:	adi 30H
 	pop b
 	ret
+
+	; ----------- PRNDEC - prints 2-digit 0 padded decimal number --------
+	; Code credt goes to copilot
+	
+PRNDEC: PUSH    PSW
+	PUSH	B
+	MOV     B, A          ; Save A in B
+	CALL    DIV10         ; Divide A by 10, quotient in A, remainder in B
+	ADI     30H           ; Convert quotient to ASCII
+	MOV	C, A
+	CALL	COUT
+	MOV     A, B          ; Move remainder to A
+	ADI     30H           ; Convert remainder to ASCII
+	MOV	C, A
+	CALL	COUT
+	POP	B
+	POP     PSW
+	RET
+
+	; ----------- DIV10 - divide A by 10, return divisor in A and rem in B ------
+	; Code credt goes to copilot
+
+DIV10:  MVI     C, 0          ; Clear D
+DIVLP:  CPI     0AH           ; Compare A with 10
+	JC      DIVEND        ; If A < 10, jump to DIVEND
+	SUI	0AH           ; Subtract 10 from A
+	INR     C             ; Increment quotient in D
+	JMP     DIVLP         ; Repeat until A < 10
+DIVEND: MOV     B, A          ; Move remainder to B
+	MOV     A, C          ; Move quotient to A
+	RET
+
+	; -------- MUL10 - multiply A by 10, return in A, destroys B ------
+	; Code credt goes to copilot
+
+MUL10: 	MOV     B, A          ; Save A in B
+	ADD     A             ; A = A * 2
+	ADD     A             ; A = A * 4
+	ADD     A             ; A = A * 8
+	ADD     B             ; A = A + B (A = A * 9)
+	ADD     B             ; A = A + B (A = A * 10)
+	RET
 
 	END
