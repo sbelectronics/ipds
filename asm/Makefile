@@ -19,7 +19,7 @@ ZCC = ../../z88dk/bin/zcc
 
 export PATH := $(PATH):../../z88dk/bin
 
-all: forth.hex hello.hex life.hex argtes.hex basic.hex song.hex aysong.hex bong.hex memtes.hex deltes.hex til311.hex
+all: forth.hex hello.hex life.hex argtes.hex basic.hex song.hex aysong.hex bong.hex memtes.hex deltes.hex til311.hex rtc.hex
 
 # .PHONY: env
 
@@ -208,11 +208,37 @@ til311.hex: til311
 til311.obj: ports til311.asm
 	$(ISIS) :f3:asm80 til311.asm
 
-sertes.obj: sertes.asm
+rtc: rtc.obj conio.obj args.obj putil.obj rtclib.obj
+	$(ISIS) :f2:link rtc.obj,conio.obj,args.obj,putil.obj,rtclib.obj,syspds.lib to rtc.lnk MAP
+	$(ISIS) :f2:locate rtc.lnk to rtc PURGE MAP PRINT\(rtc.map\)
+
+rtc.hex: rtc
+	$(ISIS) :f2:objhex rtc to rtc.hex
+
+rtc.obj: ports rtc.asm
+	$(ISIS) :f3:asm80 rtc.asm
+
+rtclib.obj: ports rtclib.asm
+	$(ISIS) :f3:asm80 rtclib.asm
+
+gps: gps.obj conio.obj args.obj putil.obj gpslib.obj
+	$(ISIS) :f2:link gps.obj,conio.obj,args.obj,putil.obj,gpslib.obj,syspds.lib to gps.lnk MAP
+	$(ISIS) :f2:locate gps.lnk to gps PURGE MAP PRINT\(gps.map\)
+
+gps.hex: gps
+	$(ISIS) :f2:objhex gps to gps.hex
+
+gps.obj: ports gps.asm
+	$(ISIS) :f3:asm80 gps.asm
+
+gpslib.obj: ports gpslib.asm
+	$(ISIS) :f3:asm80 gpslib.asm
+
+sertes.obj: ports sertes.asm
 	$(ISIS) :f3:asm80 sertes.asm
 
-sertes: sertes.obj conio.obj putil.obj
-	$(ISIS) :f2:link sertes.obj,conio.obj,putil.obj,syspds.lib to sertes.lnk MAP
+sertes: sertes.obj conio.obj args.obj putil.obj
+	$(ISIS) :f2:link sertes.obj,conio.obj,args.obj,putil.obj,syspds.lib to sertes.lnk MAP
 	$(ISIS) :f2:locate sertes.lnk to sertes PURGE MAP PRINT\(sertes.map\)
 
 sertes.hex: sertes
@@ -229,4 +255,4 @@ coptes.hex: coptes
 	$(ISIS) :f2:objhex coptes to coptes.hex
 
 clean:
-	rm -f ports.inc *.hex *.obj *.lnk *.map *.lst *.tmp *.lis forth hello life basic argtes bong wiltel song memtes deltes til311 aysong sertes
+	rm -f ports.inc *.hex *.obj *.lnk *.map *.lst *.tmp *.lis forth hello life basic argtes bong wiltel song memtes deltes til311 aysong sertes rtc gps
