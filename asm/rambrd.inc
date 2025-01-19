@@ -22,3 +22,14 @@ TILM    EQU     0B1H
 TILR    EQU     0B2H
 TILB    EQU     0B3H    ; blanking port
 TILI    EQU     0B0H    ; input port
+
+; RTC multimodule
+
+RTCDAT  EQU     0B0H
+RTCADR  EQU     0B1H
+RTCCTL  EQU     0B2H
+RTC82C  EQU     0B3H
+
+; Serial multimodule
+
+SERBAS  EQU     0B0H
