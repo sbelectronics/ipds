@@ -34,10 +34,10 @@ $macrofile
 	PUBLIC SEC
 
 	EXTRN RTCSTP
+	EXTRN RTCTIM
 	EXTRN SETHO
 	EXTRN SETMI
 	EXTRN SETSE
-	EXTRN GETTIM
 
 	STKLN	100H				; Size of stack segment
 
@@ -69,7 +69,7 @@ NOTM:
 	CALL	SETSE
 NOTS:
 
-	CALL	GETTIM
+	CALL	RTCTIM
 
 CHNGD:	CALL	PRNTIM
 
@@ -77,7 +77,7 @@ CHNGD:	CALL	PRNTIM
 	ORA	A
 	JNZ	LEAVE		; No repeat flag, so leave
 
-AGAIN:  CALL	GETTIM		; Get the time again
+AGAIN:  CALL	RTCTIM		; Get the time again
 	LDA	LSTSEC		; See if the seconds digit has changed
 	MOV	B,A
 	LDA	SEC
