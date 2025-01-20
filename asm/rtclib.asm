@@ -4,6 +4,9 @@ $macrofile
 ;	Scott Baker, www.smbaker.com
 ;
 ; 	Library for using MSM5832 RTC IC connected via 8255
+;
+;	Expects externally defined HOUR, MIN, SEC. Each one byte to
+;	hold time from GETTIM.
 
 
 	PUBLIC	RTCSTP
@@ -12,9 +15,9 @@ $macrofile
 	PUBLIC	SETMI
 	PUBLIC	SETSE
 
-	PUBLIC	HOUR
-	PUBLIC	MIN
-	PUBLIC	SEC
+	EXTRN	HOUR
+	EXTRN	MIN
+	EXTRN	SEC
 
 	EXTRN	MUL10
 	EXTRN	DIV10
@@ -177,9 +180,5 @@ RTCPUT:	PUSH	PSW
 	MVI	A, MODEIN
 	OUT	RTC82C
 	RET
-
-HOUR:	DB	0
-MIN:	DB	0
-SEC:	DB	0
 
 	END

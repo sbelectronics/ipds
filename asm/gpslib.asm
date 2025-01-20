@@ -1,18 +1,21 @@
 $macrofile
 
-;	TITLE	'rtclib`
+;	TITLE	'gpslib`
 ;	Scott Baker, www.smbaker.com
 ;
-; 	Library for using MSM5832 RTC IC connected via 8255
+; 	Library for using GPS connected via 8255.
+;
+;	Expects externally defined HOUR, MIN, SEC. One byte each.
+;	Extects externally defined GPSST to hold state. One byte.
 
 
 	PUBLIC	GPSSTP
 	PUBLIC  GPSIDL
 
-	PUBLIC	HOUR
-	PUBLIC	MIN
-	PUBLIC	SEC
-	PUBLIC	GPSST
+	EXTRN HOUR
+	EXTRN MIN
+	EXTRN SEC
+	EXTRN GPSST	
 
 	EXTRN	MUL10
 	EXTRN	DIV10
@@ -239,11 +242,5 @@ BAD:    MVI	A, 1
         STA	GPSST
 GOOD:
         RET
-
-GPSST:  DB	0		; state
-
-HOUR:	DB	0
-MIN:	DB	0
-SEC:	DB	0
 
 	END
