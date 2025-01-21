@@ -4,6 +4,10 @@ $macrofile
 ;	Scott Baker, www.smbaker.com
 ;
 ;	Nixie Tube Clock
+;
+;	Flags
+;	  G - use GPS instead of RTC
+;	  Q - quit
 
 ; ISIS system calls
 ;
@@ -12,9 +16,12 @@ $macrofile
 	EXTRN ZSOUT
 	EXTRN COPEN
 	EXTRN EXIT
+	EXTRN CSTS
+	EXTRN CI
 
 	EXTRN DOFLAG
 	EXTRN FLAGG
+	EXTRN FLAGQ
 
 	EXTRN PHEXA
 	EXTRN PCRLF
@@ -60,11 +67,30 @@ ORIG:	LXI	SP, STACK
 AGAIN:	CALL	GETTIM
 	CALL	NIXTIM
 
+	LDA	FLAGQ
+	CPI	0FFH
+	JNZ	QUIET
 	MVI	C, 0DH		; Print CR to overwrite line
 	CALL	COUT
 	CALL	PRNTIM
-
+QUIET:
 	JMP	AGAIN
+
+	; CQUIT - see if it's quittin' time
+
+CQUIT:	CALL	CSTS		; key pending?
+	ORA	A
+	RZ			; No Key
+	CALL	CI
+	CPI	3		; CTRL-C ?
+	JZ	LEAVE
+	CPI	26		; CTRL-Z ?
+	JZ	LEAVE
+	CPI	'Q'		; 'Q'
+	JZ	LEAVE
+	CPI	'q'		; 'q'
+	JZ	LEAVE
+	RET
 
 LEAVE:	CALL	PCRLF
 	CALL 	EXIT
@@ -74,12 +100,14 @@ LEAVE:	CALL	PCRLF
 GETTIM: LDA	FLAGG
 	CPI 	0FFH
 	JZ	RTCAGN
-GPSAGN:	CALL	GPSIDL
+GPSAGN:	CALL	CQUIT
+	CALL	GPSIDL
 	LDA	GPSST
 	CPI	14
 	JNZ	GPSAGN
 	JMP	ADJTIM		; Now adjust for timezone. ADJTIM will return.
-RTCAGN:	CALL	RTCTIM
+RTCAGN:	CALL	CQUIT
+	CALL	RTCTIM
 	LDA	LSTSEC		; See if the seconds digit has changed
 	MOV	B,A
 	LDA	SEC
