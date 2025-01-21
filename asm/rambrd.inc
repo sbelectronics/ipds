@@ -25,10 +25,10 @@ TILI    EQU     0B0H    ; input port
 
 ; RTC multimodule
 
-RTCDAT  EQU     0B0H
-RTCADR  EQU     0B1H
-RTCCTL  EQU     0B2H
-RTC82C  EQU     0B3H
+RTCDAT  EQU     0A0H
+RTCADR  EQU     0A1H
+RTCCTL  EQU     0A2H
+RTC82C  EQU     0A3H
 
 ; Serial multimodule
 

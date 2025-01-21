@@ -234,6 +234,16 @@ gps.obj: ports gps.asm
 gpslib.obj: ports gpslib.asm
 	$(ISIS) :f3:asm80 gpslib.asm
 
+nixclk: nixclk.obj conio.obj args.obj putil.obj gpslib.obj rtclib.obj
+	$(ISIS) :f2:link nixclk.obj,conio.obj,args.obj,putil.obj,gpslib.obj,rtclib.obj,syspds.lib to nixclk.lnk MAP
+	$(ISIS) :f2:locate nixclk.lnk to nixclk PURGE MAP PRINT\(nixclk.map\)
+
+nixclk.hex: nixclk
+	$(ISIS) :f2:objhex nixclk to nixclk.hex
+
+nixclk.obj: ports nixclk.asm
+	$(ISIS) :f3:asm80 nixclk.asm
+
 sertes.obj: ports sertes.asm
 	$(ISIS) :f3:asm80 sertes.asm
 
@@ -255,4 +265,4 @@ coptes.hex: coptes
 	$(ISIS) :f2:objhex coptes to coptes.hex
 
 clean:
-	rm -f ports.inc *.hex *.obj *.lnk *.map *.lst *.tmp *.lis forth hello life basic argtes bong wiltel song memtes deltes til311 aysong sertes rtc gps
+	rm -f ports.inc *.hex *.obj *.lnk *.map *.lst *.tmp *.lis forth hello life basic argtes bong wiltel song memtes deltes til311 aysong sertes rtc gps nixclk
