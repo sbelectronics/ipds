@@ -19,7 +19,7 @@ ZCC = ../../z88dk/bin/zcc
 
 export PATH := $(PATH):../../z88dk/bin
 
-all: forth.hex hello.hex life.hex argtes.hex basic.hex song.hex aysong.hex bong.hex memtes.hex deltes.hex til311.hex rtc.hex drives.hex
+all: forth.hex hello.hex life.hex argtes.hex basic.hex song.hex aysong.hex bong.hex memtes.hex deltes.hex til311.hex rtc.hex drives.hex gps.hex nixclk.hex dig.hex votrax.hex sertes.hex coptes.hex
 
 # .PHONY: env
 
