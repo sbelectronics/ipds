@@ -19,7 +19,7 @@ ZCC = ../../z88dk/bin/zcc
 
 export PATH := $(PATH):../../z88dk/bin
 
-all: forth.hex hello.hex life.hex argtes.hex basic.hex song.hex aysong.hex bong.hex memtes.hex deltes.hex til311.hex rtc.hex
+all: forth.hex hello.hex life.hex argtes.hex basic.hex song.hex aysong.hex bong.hex memtes.hex deltes.hex til311.hex rtc.hex drives.hex
 
 # .PHONY: env
 
@@ -244,6 +244,19 @@ nixclk.hex: nixclk
 nixclk.obj: ports nixclk.asm
 	$(ISIS) :f3:asm80 nixclk.asm
 
+dig: dig.obj conio.obj putil.obj diglib.obj
+	$(ISIS) :f2:link dig.obj,conio.obj,putil.obj,diglib.obj,syspds.lib to dig.lnk MAP
+	$(ISIS) :f2:locate dig.lnk to dig PURGE MAP PRINT\(dig.map\)
+
+dig.hex: dig
+	$(ISIS) :f2:objhex dig to dig.hex
+
+dig.obj: ports dig.asm
+	$(ISIS) :f3:asm80 dig.asm
+
+diglib.obj: ports diglib.asm
+	$(ISIS) :f3:asm80 diglib.asm
+
 sertes.obj: ports sertes.asm
 	$(ISIS) :f3:asm80 sertes.asm
 
@@ -264,5 +277,28 @@ coptes: coptes.obj conio.obj putil.obj
 coptes.hex: coptes
 	$(ISIS) :f2:objhex coptes to coptes.hex
 
+drives.obj: drives.asm
+	$(ISIS) :f3:asm80 drives.asm
+
+drives: drives.obj conio.obj putil.obj
+	$(ISIS) :f2:link drives.obj,conio.obj,putil.obj,syspds.lib to drives.lnk MAP
+	$(ISIS) :f2:locate drives.lnk to drives PURGE MAP PRINT\(drives.map\)
+
+drives.hex: drives
+	$(ISIS) :f2:objhex drives to drives.hex
+
+votrax: votrax.obj conio.obj args.obj putil.obj vtxlib.obj
+	$(ISIS) :f2:link votrax.obj,conio.obj,args.obj,putil.obj,vtxlib.obj,syspds.lib to votrax.lnk MAP
+	$(ISIS) :f2:locate votrax.lnk to votrax PURGE MAP PRINT\(votrax.map\)
+
+votrax.hex: votrax
+	$(ISIS) :f2:objhex votrax to votrax.hex
+
+votrax.obj: ports votrax.asm
+	$(ISIS) :f3:asm80 votrax.asm
+
+vtxlib.obj: ports vtxlib.asm
+	$(ISIS) :f3:asm80 vtxlib.asm
+
 clean:
-	rm -f ports.inc *.hex *.obj *.lnk *.map *.lst *.tmp *.lis forth hello life basic argtes bong wiltel song memtes deltes til311 aysong sertes rtc gps nixclk
+	rm -f ports.inc *.hex *.obj *.lnk *.map *.lst *.tmp *.lis forth hello life basic argtes bong wiltel song memtes deltes til311 aysong sertes rtc gps nixclk dig votrax

@@ -33,3 +33,14 @@ RTC82C  EQU     073H
 ; Serial multimodule
 
 SERBAS  EQU     070H
+
+; Digitalker multimodule
+
+DIGOUT  EQU     070H
+DIGST   EQU     070H
+
+; Votrax multimovule
+
+VTXPHN  EQU     070H
+VTXRDY  EQU     070H
+VTXMUT  EQU     071H

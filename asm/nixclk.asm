@@ -53,28 +53,28 @@ NIXM1	EQU	NIXBAS+4
 NIXS10	EQU	NIXBAS+6
 NIXS1	EQU	NIXBAS+7
 
-DTZ	EQU	-8		; Default timezone is UTC-7
+DTZ	EQU	-8		; Default timezone is UTC-8
 
 ORIG:	LXI	SP, STACK
 	CALL	COPEN
 	CALL	DOFLAG
 
-	CALL	SETUP
+	CALL	SETUP		; Setup the GPS or RTC
 
-	MVI	A, DTZ
+	MVI	A, DTZ		; Set default time zone for GPS
 	STA	TZONE
 
-AGAIN:	CALL	GETTIM
-	CALL	NIXTIM
+AGAIN:	CALL	GETTIM		; Get Time
+	CALL	NIXTIM		; Output to nixie tubes
 
 	LDA	FLAGQ
 	CPI	0FFH
 	JNZ	QUIET
 	MVI	C, 0DH		; Print CR to overwrite line
 	CALL	COUT
-	CALL	PRNTIM
+	CALL	PRNTIM		; Print time to console
 QUIET:
-	JMP	AGAIN
+	JMP	AGAIN		; Run forever
 
 	; CQUIT - see if it's quittin' time
 

@@ -33,3 +33,14 @@ RTC82C  EQU     0A3H
 ; Serial multimodule
 
 SERBAS  EQU     0B0H
+
+; Digitalker multimodule
+
+DIGOUT  EQU     0B0H
+DIGST   EQU     0B0H
+
+; Votrax multimovule
+
+VTXPHN  EQU     0B0H
+VTXRDY  EQU     0B0H
+VTXMUT  EQU     0B1H
