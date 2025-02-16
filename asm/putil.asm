@@ -10,6 +10,7 @@
 	PUBLIC	PSPACE
 	PUBLIC	PCRLF
 	PUBLIC	PHEXA
+	PUBLIC	PBINA
 	PUBLIC	PRNDEC
 	PUBLIC	DIV10
 	PUBLIC	MUL10
@@ -117,6 +118,22 @@ MUL10: 	MOV     B, A          ; Save A in B
 	ADD     A             ; A = A * 8
 	ADD     B             ; A = A + B (A = A * 9)
 	ADD     B             ; A = A + B (A = A * 10)
+	RET
+
+	; --------- print 8-bit binary in A register ---------
+
+PBINA:  PUSH B
+	MVI B, 8          ; SET BIT COUNTER TO 8
+PBINLP: RLC               ; ROTATE LEFT THROUGH CARRY
+	PUSH PSW
+	ANI 01H           ; MASK ALL BUT THE LEAST SIGNIFICANT BIT
+	ADI 30H           ; CONVERT TO ASCII
+	MOV C, A
+	CALL COUT         ; PRINT THE BIT
+	POP PSW
+	DCR B             ; DECREMENT BIT COUNTER
+	JNZ PBINLP        ; REPEAT UNTIL ALL BITS ARE PRINTED
+	POP B
 	RET
 
 	END
