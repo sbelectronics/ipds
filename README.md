@@ -17,13 +17,11 @@ I moved all multimodules over to https://github.com/sbelectronics/multibus/tree/
 
 ## asm
 
-This directory contains various assembly source code, including:
+Moved to https://github.com/sbelectronics/multibus/tree/master/asm
 
-  * Conway's Game of Life
+## c
 
-  * Fig-Forth
-
-  * Nascom Basic
+Moved to https://github.com/sbelectronics/multibus/tree/master/c
 
 ## PLM
 
