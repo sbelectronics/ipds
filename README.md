@@ -11,6 +11,10 @@ ipds-100. This will allow you to use, for example, isbx-251 bubble memory
 modules. See https://www.smbaker.com/adding-bubble-memory-to-an-ipds-100-personal-development-system-clonding-the-ipds-120-multimodule-adapter
 for more information.
 
+# Multimodules
+
+I moved all multimodules over to https://github.com/sbelectronics/multibus/tree/master/multimodule
+
 ## asm
 
 This directory contains various assembly source code, including:
